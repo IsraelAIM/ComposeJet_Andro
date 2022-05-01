@@ -6,6 +6,7 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -13,28 +14,34 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.setValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.text.TextStyle
 import com.elmundo.jetpackcompose.ui.theme.JetPackComposeTheme
+import kotlin.math.exp
 
 //Lista de mensajes
 private val messages: List<MyMessage> = listOf(
-    MyMessage("Hola Roberto", "¿Listo para ir de shop?"),
-    MyMessage("Hola Rey", "¿Listo para ir de shop?"),
-    MyMessage("Hola Asiw", "¿Listo para ir de shop?"),
-    MyMessage("Hola Saber", "¿Listo para ir de shop?"),
-    MyMessage("Hola Israel", "¿Listo para ir de shop?"),
-    MyMessage("Hola Tony", "¿Listo para ir de shop?"),
-    MyMessage("Hola Sharon", "¿Listo para ir de shop?"),
-    MyMessage("Hola Henry", "¿Listo para ir de shop?"),
-    MyMessage("Hola Jasón", "¿Listo para ir de shop?"),
-    MyMessage("Hola Connor", "¿Listo para ir de shop?"),
-    MyMessage("Hola Fred", "¿Listo para ir de shop?"),
-    MyMessage("Hola Cloe", "¿Listo para ir de shop?"),
+    MyMessage("Hola Roberto", "¿Listo para ir el gran viaje? Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris facilisis, ipsum mattis hendrerit dictum, neque eros tempus lorem, at lacinia tellus orci et metus. "),
+    MyMessage("Hola Rey", "¿Listo para ir de shop? Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris facilisis, ipsum mattis hendrerit dictum, neque eros tempus lorem, at lacinia tellus orci et metus. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris facilisis, ipsum mattis hendrerit dictum, neque eros tempus lorem, at lacinia tellus orci et metus." ),
+    MyMessage("Hola Asiw", "¿Listo para ir de shop? Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris facilisis, ipsum mattis hendrerit dictum, neque eros tempus lorem, at lacinia tellus orci et metus. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris facilisis, ipsum mattis hendrerit dictum, neque eros tempus lorem, at lacinia tellus orci et metus. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris facilisis, ipsum mattis hendrerit dictum, neque eros tempus lorem, at lacinia tellus orci et metus."),
+    MyMessage("Hola Saber", "¿Listo para ir de shop? Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris facilisis, ipsum mattis hendrerit dictum, neque eros tempus lorem, at lacinia tellus orci et metus. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris facilisis, ipsum mattis hendrerit dictum, neque eros tempus lorem, at lacinia tellus orci et metus."),
+    MyMessage("Hola Israel", "¿Listo para ir de shop? Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris facilisis, ipsum mattis hendrerit dictum, neque eros tempus lorem, at lacinia tellus orci et metus. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris facilisis, ipsum mattis hendrerit dictum, neque eros tempus lorem, at lacinia tellus orci et metus."),
+    MyMessage("Hola Tony", "¿Listo para ir de shop? Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris facilisis, ipsum mattis hendrerit dictum, neque eros tempus lorem, at lacinia tellus orci et metus. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris facilisis, ipsum mattis hendrerit dictum, neque eros tempus lorem, at lacinia tellus orci et metus."),
+    MyMessage("Hola Sharon", "¿Listo para ir de shop? Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris facilisis, ipsum mattis hendrerit dictum, neque eros tempus lorem, at lacinia tellus orci et metus. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris facilisis, ipsum mattis hendrerit dictum, neque eros tempus lorem, at lacinia tellus orci et metus."),
+    MyMessage("Hola Henry", "¿Listo para ir de shop? Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris facilisis, ipsum mattis hendrerit dictum, neque eros tempus lorem, at lacinia tellus orci et metus. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris facilisis, ipsum mattis hendrerit dictum, neque eros tempus lorem, at lacinia tellus orci et metus."),
+    MyMessage("Hola Jasón", "¿Listo para ir de shop? Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris facilisis, ipsum mattis hendrerit dictum, neque eros tempus lorem, at lacinia tellus orci et metus. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris facilisis, ipsum mattis hendrerit dictum, neque eros tempus lorem, at lacinia tellus orci et metus."),
+    MyMessage("Hola Connor", "¿Listo para ir de shop? Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris facilisis, ipsum mattis hendrerit dictum, neque eros tempus lorem, at lacinia tellus orci et metus. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris facilisis, ipsum mattis hendrerit dictum, neque eros tempus lorem, at lacinia tellus orci et metus."),
+    MyMessage("Hola Fred", "¿Listo para ir de shop? Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris facilisis, ipsum mattis hendrerit dictum, neque eros tempus lorem, at lacinia tellus orci et metus. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris facilisis, ipsum mattis hendrerit dictum, neque eros tempus lorem, at lacinia tellus orci et metus."),
+    MyMessage("Hola Cloe", "¿Listo para ir de shop? Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris facilisis, ipsum mattis hendrerit dictum, neque eros tempus lorem, at lacinia tellus orci et metus. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris facilisis, ipsum mattis hendrerit dictum, neque eros tempus lorem, at lacinia tellus orci et metus."),
 )
 
 class MainActivity : ComponentActivity() {
@@ -94,19 +101,33 @@ fun MyImage() {
 //El MyMessage es un tipo de dato y se les otorgado porque de él se le pondrá a los demás elementos
 @Composable
 fun myTexts(message: MyMessage) {
-    Column(modifier = Modifier.padding(start = 8.dp)) {
+    //esta variable debe ser recordado, osea, que funciona guardando el valor de la var
+    var expanded by remember {
+        mutableStateOf(false)
+    }
+    Column(modifier = Modifier
+        .padding(start = 8.dp)
+        .clickable {
+            expanded = !expanded
+        }) {
         MyText(
             message.title,
             MaterialTheme.colors.primary,
-            MaterialTheme.typography.subtitle1
+            MaterialTheme.typography.subtitle1,
+
         )
         Spacer(modifier = Modifier.height(16.dp))
 
         MyText(
             message.body,
             MaterialTheme.colors.onBackground,
-            MaterialTheme.typography.subtitle2
+            MaterialTheme.typography.subtitle2,
+            //Aqui
+            if(expanded) Int.MAX_VALUE else 1
+
+
         )
+        /*
         MyText(
             "Iniciando el gran viaje",
             MaterialTheme.colors.primaryVariant,
@@ -116,14 +137,15 @@ fun myTexts(message: MyMessage) {
             "Será largo",
             MaterialTheme.colors.primaryVariant,
             MaterialTheme.typography.body2
-        )
+        )*/
     }
 
 }
 //Digamos que es una plantilla para un mensaje
+//Añade el lines Int.MAX VALUE
 @Composable
-fun MyText(text: String, color: Color, style: androidx.compose.ui.text.TextStyle) {
-    Text(text, color = color, style = style)
+fun MyText(text: String, color: Color, style: androidx.compose.ui.text.TextStyle, lines:Int=Int.MAX_VALUE) {
+    Text(text, color = color, style = style, maxLines = lines)
 }
 
 //@Preview()
